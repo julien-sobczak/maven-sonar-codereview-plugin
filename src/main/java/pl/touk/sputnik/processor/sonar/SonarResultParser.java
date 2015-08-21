@@ -3,18 +3,20 @@ package pl.touk.sputnik.processor.sonar;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import pl.touk.sputnik.review.ReviewResult;
 import pl.touk.sputnik.review.Severity;
 import pl.touk.sputnik.review.Violation;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
@@ -43,6 +45,8 @@ class SonarResultParser {
     public ReviewResult parseResults() throws IOException {
         ReviewResult result = new ReviewResult();
         ObjectMapper mapper = new ObjectMapper();
+        log.info(resultFile.getAbsolutePath());
+        log.info(new String(Files.readAllBytes(Paths.get("file")), StandardCharsets.UTF_8));
         JsonNode rootNode = mapper.readTree(new FileReader(resultFile));
         JsonNode issues = rootNode.path("issues");
         Iterator<JsonNode> issuesIterator = issues.iterator();
@@ -50,6 +54,7 @@ class SonarResultParser {
 
         while (issuesIterator.hasNext()) {
             JsonNode issue = issuesIterator.next();
+            log.info("Found an issue: " + issue);
             boolean isNew = issue.path("isNew").asBoolean();
             if (!isNew) {
                 log.debug("Skipping already indexed issue: {}", issue.toString());
