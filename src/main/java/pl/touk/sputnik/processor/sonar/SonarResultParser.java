@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.touk.sputnik.review.ReviewResult;
@@ -46,7 +48,7 @@ class SonarResultParser {
         ReviewResult result = new ReviewResult();
         ObjectMapper mapper = new ObjectMapper();
         log.info(resultFile.getAbsolutePath());
-        log.info(new String(Files.readAllBytes(Paths.get("file")), StandardCharsets.UTF_8));
+        log.info(FileUtils.readFileToString(resultFile));
         JsonNode rootNode = mapper.readTree(new FileReader(resultFile));
         JsonNode issues = rootNode.path("issues");
         Iterator<JsonNode> issuesIterator = issues.iterator();
