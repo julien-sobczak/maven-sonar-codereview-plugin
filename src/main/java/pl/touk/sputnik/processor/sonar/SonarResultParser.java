@@ -73,7 +73,9 @@ class SonarResultParser {
             String severity = issue.path("severity").asText();
             String rule = issue.path("rule").asText();
             result.add(new Violation(file, line, String.format("%s (Rule: %s)", message, rule), getSeverity(severity)));
+            log.info("Added an issue at line " + line);
         }
+        log.info("Nb issues found: " + result.getViolations().size());
         return result;
     }
 
