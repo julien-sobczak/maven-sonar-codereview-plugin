@@ -25,6 +25,10 @@ public class Engine {
 
     public void run() {
         List<ReviewFile> reviewFiles = facade.listFiles();
+        log.info("Nb file to reviews: " + reviewFiles.size());
+        for (ReviewFile eachReviewFile : reviewFiles) {
+        	log.info(eachReviewFile.toString());
+        }
         Review review = new Review(reviewFiles, ReviewFormatterFactory.get(config));
 
         for (BeforeReviewVisitor beforeReviewVisitor : new VisitorBuilder().buildBeforeReviewVisitors(config)) {
