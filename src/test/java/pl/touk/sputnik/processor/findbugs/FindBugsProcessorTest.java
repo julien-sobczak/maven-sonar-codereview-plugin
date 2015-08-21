@@ -25,7 +25,7 @@ public class FindBugsProcessorTest extends TestEnvironment {
 
     @Before
     public void setUp() throws Exception {
-        config = new ConfigurationSetup().setUp(ImmutableMap.of(GeneralOption.BUILD_TOOL.getKey(), "gradle"));
+        config = new ConfigurationSetup().setUp(ImmutableMap.of(GeneralOption.BUILD_TOOL.getKey(), "maven"));
         findBugsProcessor = new FindBugsProcessor(config);
     }
 
